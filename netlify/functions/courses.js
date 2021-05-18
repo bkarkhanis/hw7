@@ -70,6 +70,10 @@ exports.handler = async function(event) {
   // get the documents from the query
   let sections = sectionsQuery.docs
 
+  //define a variable for cum course rating and review count
+  let countCourseReviews = 0
+  let totalCourseRating = 0
+
   // loop through the documents
   for (let i=0; i < sections.length; i++) {
     // get the document ID of the section
@@ -94,6 +98,39 @@ exports.handler = async function(event) {
     returnValue.sections.push(sectionObject)
 
     // 🔥 your code for the reviews/ratings goes here
+
+    // create an array for section data
+    sectionData.reviews =[]
+
+    // retrieve docs from teh query
+    let reviews = reviewsQuery.docs
+
+    // define variables for ratings totals and count of reviews
+    let secReviewsCount = 0
+    let secRatingsTotal = 0
+
+    // perform doc loop
+    for (let reviewIndex = 0; reviewIndex < reviews.length; reviewIndex++)
+
+    // retrieve doc ID for each review
+    let reviewID = reviews[reviewIndex].id
+
+    // retrieve data from review
+    let reviewInfo = reviews[reviewIndex].data()
+
+    // add rev info to the section data
+    sectionData.reviews.push(reviewData)
+
+    // loop thru reviews and ratinsby adding 1
+    secReviewsCount = secReviewsCount + 1
+    secRatingsTotal = secRatingsTotal + 1
+
+    // calculate count of reviews and avg rating ingo
+    sectionData.secReviewsCount = secReviewsCount
+    sectionData.avgRating = secRatingsTotal / secRatingsTotal
+
+    // include info in course ratins
+    courseData.sections.push(sectionData)
   }
 
   // return the standard response
